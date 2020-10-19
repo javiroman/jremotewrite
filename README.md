@@ -1,15 +1,61 @@
 # jremotewrite
+
 Java Prometheus Remote Write Endpoint
 
+# Usage
 
-https://www.eclipse.org/jetty/
+```
+$ docker-compose up
+Starting nodeexporter ... done
+Starting prometheus   ... done
+Attaching to prometheus, nodeexporter
+[...]
 
-https://developers.google.com/protocol-buffers/docs/javatutorial
+$ mvn package
+$ java -jar target/jremotewrite-1.0-SNAPSHOT-uber.jar 
+Oct 19, 2020 12:44:07 PM main.java.jremotewrite.JRemoteWrite main
+INFO: Starting Prometheus Remote Write Endpoint: 
+2020-10-19 12:44:07.548:INFO::main: Logging initialized @271ms
+[..]
+```
 
-https://www.xolstice.org/protobuf-maven-plugin/
+# Outptut
 
-http://google.github.io/snappy/
+```
+TIMESERIE: 
+   labels {
+     name: "__name__"
+     value: "scrape_samples_post_metric_relabeling"
+   }
+   labels {
+     name: "instance"
+     value: "prometheus:9090"
+   }
+   labels {
+     name: "job"
+     value: "prometheus"
+   }
+   samples {
+     value: 445.0
+     timestamp: 1603104079293
+   }
+   
+   TIMESERIE: 
+   labels {
+     name: "__name__"
+     value: "scrape_series_added"
+   }
+   labels {
+     name: "instance"
+     value: "prometheus:9090"
+   }
+   labels {
+     name: "job"
+     value: "prometheus"
+   }
+   samples {
+     timestamp: 1603104079293
+   }
+[..]
 
-https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/
-
-https://www.eclipse.org/jetty/documentation/current/jetty-handlers.html#writing-custom-handlers
+```

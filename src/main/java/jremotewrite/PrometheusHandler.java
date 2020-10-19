@@ -31,6 +31,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.xerial.snappy.Snappy;
 
 import prometheus.Remote.WriteRequest;
+import prometheus.Types;
 
 public class PrometheusHandler extends AbstractHandler {
 
@@ -76,9 +77,14 @@ public class PrometheusHandler extends AbstractHandler {
             ServletOutputStream out = response.getOutputStream();
             out.flush();
 
+            for (Types.TimeSeries s: writeRequest.getTimeseriesList()) {
+                System.out.println("TIMESERIE: ");
+                System.out.println(s);
+            }
+
             //String json = JSON_PRINTER.print(writeRequest);
             //System.out.println(json);
-            System.out.println(writeRequest);
+            //System.out.println(writeRequest);
         }
         catch (IOException e) {
             throw e;
