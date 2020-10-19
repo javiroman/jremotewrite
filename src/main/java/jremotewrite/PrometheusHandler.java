@@ -30,6 +30,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.xerial.snappy.Snappy;
 
+import org.xerial.snappy.SnappyInputStream;
 import prometheus.Remote.WriteRequest;
 import prometheus.Types;
 
@@ -54,25 +55,13 @@ public class PrometheusHandler extends AbstractHandler {
             Retrieves the body of the request as binary data:
             The data is protobuf compressed with snappy.
          */
-        try (InputStream is = baseRequest.getInputStream()) {
+        try (SnappyInputStream is = new SnappyInputStream(baseRequest.getInputStream())) {
 
             if (is == null) {
                 logger.warning("inputstream is null");
             }
 
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-            int nRead;
-            byte[] data = new byte[1024];
-            while ((nRead = is.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
-            }
-
-            buffer.flush();
-
-            byte[] a = Snappy.uncompress(buffer.toByteArray());
-            WriteRequest writeRequest =
-                    WriteRequest.parseFrom(Snappy.uncompress(buffer.toByteArray()));
+            WriteRequest writeRequest = WriteRequest.parseFrom(is);
 
             ServletOutputStream out = response.getOutputStream();
             out.flush();
