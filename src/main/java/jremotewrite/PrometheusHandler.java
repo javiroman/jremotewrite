@@ -19,11 +19,10 @@
 package main.java.jremotewrite;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.logging.Logger;
 
 import com.google.protobuf.util.JsonFormat;
@@ -31,8 +30,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.xerial.snappy.Snappy;
 
-import org.xerial.snappy.SnappyInputStream;
-import prometheus.Remote;
+import prometheus.Remote.WriteRequest;
 
 public class PrometheusHandler extends AbstractHandler {
 
@@ -51,7 +49,15 @@ public class PrometheusHandler extends AbstractHandler {
                        HttpServletRequest request,
                        HttpServletResponse response) throws IOException,ServletException {
 
-        try (InputStream is = request.getInputStream()) {
+        /*
+            Retrieves the body of the request as binary data:
+            The data is protobuf compressed with snappy.
+         */
+        try (InputStream is = baseRequest.getInputStream()) {
+
+            if (is == null) {
+                logger.warning("inputstream is null");
+            }
 
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
@@ -63,11 +69,16 @@ public class PrometheusHandler extends AbstractHandler {
 
             buffer.flush();
 
-            Remote.WriteRequest writeRequest =
-                    Remote.WriteRequest.parseFrom(Snappy.uncompress(buffer.toByteArray()));
+            byte[] a = Snappy.uncompress(buffer.toByteArray());
+            WriteRequest writeRequest =
+                    WriteRequest.parseFrom(Snappy.uncompress(buffer.toByteArray()));
 
-            String json = JSON_PRINTER.print(writeRequest);
-            logger.info(json);
+            ServletOutputStream out = response.getOutputStream();
+            out.flush();
+
+            //String json = JSON_PRINTER.print(writeRequest);
+            //System.out.println(json);
+            System.out.println(writeRequest);
         }
         catch (IOException e) {
             throw e;

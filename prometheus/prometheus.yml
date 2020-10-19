@@ -13,5 +13,5 @@ scrape_configs:
     - targets: ['localhost:9090']
 
 remote_write:
-    - url: 'http://192.168.1.144:8000/receive'
+    - url: 'http://192.168.1.144:8000/v1/write/'
 

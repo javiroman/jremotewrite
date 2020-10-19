@@ -19,6 +19,8 @@
 package main.java.jremotewrite;
 
 import java.util.logging.Logger;
+
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
@@ -30,7 +32,7 @@ public class JRemoteWrite {
         Server server = new Server(port);
 
         ContextHandler context = new ContextHandler();
-        context.setContextPath("/receive");
+        context.setContextPath("/v1/write/");
         context.setHandler(new PrometheusHandler());
 
         server.setHandler(context);
