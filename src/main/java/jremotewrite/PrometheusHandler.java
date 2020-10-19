@@ -23,12 +23,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gson.Gson;
 import com.google.protobuf.util.JsonFormat;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.xerial.snappy.Snappy;
 
 import org.xerial.snappy.SnappyInputStream;
 import prometheus.Remote.WriteRequest;
@@ -66,17 +68,36 @@ public class PrometheusHandler extends AbstractHandler {
             ServletOutputStream out = response.getOutputStream();
             out.flush();
 
-            for (Types.TimeSeries s: writeRequest.getTimeseriesList()) {
-                System.out.println("TIMESERIE: ");
-                System.out.println(s);
+            for (Types.TimeSeries timeSeries: writeRequest.getTimeseriesList()) {
+                List<MetricsLabels> labels = new ArrayList<>();
+                Gson gson = new Gson();
+                MetricsLabels metricsLabels = new MetricsLabels();
+                Metrics metrics = new Metrics();
+                for (Types.Label label: timeSeries.getLabelsList()) {
+                    metricsLabels.name = label.getName();
+                    metricsLabels.value = label.getValue();
+                    labels.add(metricsLabels);
+                }
+                for (Types.Sample sample: timeSeries.getSamplesList()) {
+                    metrics.sample = Double.toString(sample.getValue());
+                    metrics.timestamp = Long.toString(sample.getTimestamp());
+                }
+                metrics.label = labels;
+                System.out.println(gson.toJson(metrics));
             }
-
-            //String json = JSON_PRINTER.print(writeRequest);
-            //System.out.println(json);
-            //System.out.println(writeRequest);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw e;
         }
     }
+}
+
+class Metrics {
+    public List<MetricsLabels> label;
+    public String sample;
+    public String timestamp;
+}
+
+class MetricsLabels {
+   public String name;
+   public String value;
 }

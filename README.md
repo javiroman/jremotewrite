@@ -22,40 +22,15 @@ INFO: Starting Prometheus Remote Write Endpoint:
 # Outptut
 
 ```
-TIMESERIE: 
-   labels {
-     name: "__name__"
-     value: "scrape_samples_post_metric_relabeling"
-   }
-   labels {
-     name: "instance"
-     value: "prometheus:9090"
-   }
-   labels {
-     name: "job"
-     value: "prometheus"
-   }
-   samples {
-     value: 445.0
-     timestamp: 1603104079293
-   }
-   
-   TIMESERIE: 
-   labels {
-     name: "__name__"
-     value: "scrape_series_added"
-   }
-   labels {
-     name: "instance"
-     value: "prometheus:9090"
-   }
-   labels {
-     name: "job"
-     value: "prometheus"
-   }
-   samples {
-     timestamp: 1603104079293
-   }
-[..]
-
+{"label":[{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"}],"sample":"1188.0","timestamp":"1603128319294"}
+{"label":[{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"}],"sample":"1188.0","timestamp":"1603128319294"}
+{"label":[{"name":"le","value":"364.5"},{"name":"le","value":"364.5"},{"name":"le","value":"364.5"},{"name":"le","value":"364.5"}],"sample":"1093.0","timestamp":"1603128319294"}
+{"label":[{"name":"le","value":"8"},{"name":"le","value":"8"},{"name":"le","value":"8"},{"name":"le","value":"8"}],"sample":"1.0","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"0.0","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.6031232E12","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.603008363E9","timestamp":"1603128319294"}
+{"label":[{"name":"le","value":"0.01"},{"name":"le","value":"0.01"},{"name":"le","value":"0.01"},{"name":"le","value":"0.01"}],"sample":"0.0","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"0.0","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.0","timestamp":"1603128319294"}
+{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"397.0","timestamp":"1603128319294"}
 ```
