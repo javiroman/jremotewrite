@@ -32,7 +32,7 @@ public class JRemoteWrite {
         Server server = new Server(port);
 
         ContextHandler context = new ContextHandler();
-        context.setContextPath("/v1/write/");
+        context.setContextPath("/v1/write");
         context.setHandler(new PrometheusHandler());
 
         server.setHandler(context);
