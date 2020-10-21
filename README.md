@@ -22,15 +22,15 @@ INFO: Starting Prometheus Remote Write Endpoint:
 # Outptut
 
 ```
-{"label":[{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"},{"name":"le","value":"+Inf"}],"sample":"1188.0","timestamp":"1603128319294"}
-{"label":[{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"},{"name":"le","value":"153.7734375"}],"sample":"1188.0","timestamp":"1603128319294"}
-{"label":[{"name":"le","value":"364.5"},{"name":"le","value":"364.5"},{"name":"le","value":"364.5"},{"name":"le","value":"364.5"}],"sample":"1093.0","timestamp":"1603128319294"}
-{"label":[{"name":"le","value":"8"},{"name":"le","value":"8"},{"name":"le","value":"8"},{"name":"le","value":"8"}],"sample":"1.0","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"0.0","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.6031232E12","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.603008363E9","timestamp":"1603128319294"}
-{"label":[{"name":"le","value":"0.01"},{"name":"le","value":"0.01"},{"name":"le","value":"0.01"},{"name":"le","value":"0.01"}],"sample":"0.0","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"0.0","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"1.0","timestamp":"1603128319294"}
-{"label":[{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"},{"name":"job","value":"prometheus"}],"sample":"397.0","timestamp":"1603128319294"}
+{"metricLabels":[{"name":"__name__","value":"prometheus_web_federation_errors_total"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.0","timestamp":"1603283469293"}]}                                        
+{"metricLabels":[{"name":"__name__","value":"prometheus_web_federation_warnings_total"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.0","timestamp":"1603283469293"}]}                                      
+{"metricLabels":[{"name":"__name__","value":"promhttp_metric_handler_requests_in_flight"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"1.0","timestamp":"1603283469293"}]}                                    
+{"metricLabels":[{"name":"__name__","value":"promhttp_metric_handler_requests_total"},{"name":"code","value":"200"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"241.0","timestamp":"1603283469293"}]}        
+{"metricLabels":[{"name":"__name__","value":"promhttp_metric_handler_requests_total"},{"name":"code","value":"500"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.0","timestamp":"1603283469293"}]}          
+{"metricLabels":[{"name":"__name__","value":"promhttp_metric_handler_requests_total"},{"name":"code","value":"503"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.0","timestamp":"1603283469293"}]}          
+{"metricLabels":[{"name":"__name__","value":"up"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"1.0","timestamp":"1603283469293"}]}                                                                            
+{"metricLabels":[{"name":"__name__","value":"scrape_duration_seconds"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.015079253","timestamp":"1603283469293"}]}                                               
+{"metricLabels":[{"name":"__name__","value":"scrape_samples_scraped"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"541.0","timestamp":"1603283469293"}]}                                                      
+{"metricLabels":[{"name":"__name__","value":"scrape_samples_post_metric_relabeling"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"541.0","timestamp":"1603283469293"}]}                                       
+{"metricLabels":[{"name":"__name__","value":"scrape_series_added"},{"name":"instance","value":"prometheus:9090"},{"name":"job","value":"prometheus"}],"metricSamples":[{"sample":"0.0","timestamp":"1603283469293"}]} 
 ```
