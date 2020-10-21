@@ -1,10 +1,7 @@
-# my global config
 global:
-  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-  # scrape_timeout is set to the global default (10s).
+  scrape_interval:     5s
+  evaluation_interval: 5s
 
-# A scrape configuration containing exactly one endpoint to scrape:
 scrape_configs:
 
   - job_name: 'prometheus'
@@ -16,5 +13,11 @@ scrape_configs:
     - targets: ['nodeexporter:9100']
 
 remote_write:
+
     - url: 'http://192.168.1.144:8000/v1/write/'
+      name: adapter
+      queue_config: 
+       max_samples_per_send: 10000
+       batch_send_deadline: 1m
+
 

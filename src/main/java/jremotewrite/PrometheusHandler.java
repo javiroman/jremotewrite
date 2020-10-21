@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -53,38 +54,41 @@ public class PrometheusHandler extends AbstractHandler {
                        HttpServletRequest request,
                        HttpServletResponse response) throws IOException,ServletException {
 
-        /*
-            Retrieves the body of the request as binary data:
-            The data is protobuf compressed with snappy.
-         */
+        // Retrieves the body of the request as binary data: protobuf compressed with snappy.
         try (SnappyInputStream is = new SnappyInputStream(baseRequest.getInputStream())) {
 
             if (is == null) {
                 logger.warning("inputstream is null");
             }
 
+            ServletOutputStream out = response.getOutputStream();
+            response.setStatus(HttpServletResponse.SC_OK);
+
             WriteRequest writeRequest = WriteRequest.parseFrom(is);
 
-            ServletOutputStream out = response.getOutputStream();
-            out.flush();
-
             for (Types.TimeSeries timeSeries: writeRequest.getTimeseriesList()) {
-                List<MetricsLabels> labels = new ArrayList<>();
-                Gson gson = new Gson();
-                MetricsLabels metricsLabels = new MetricsLabels();
+                List<MetricLabel> labelsList = new ArrayList<>();
+                List<MetricSample> sampleList = new ArrayList<>();
                 Metrics metrics = new Metrics();
-                for (Types.Label label: timeSeries.getLabelsList()) {
-                    metricsLabels.name = label.getName();
-                    metricsLabels.value = label.getValue();
-                    labels.add(metricsLabels);
+                Gson gson = new Gson();
+                for (Types.Label labelItem: timeSeries.getLabelsList()) {
+                    MetricLabel metricsLabel = new MetricLabel();
+                    metricsLabel.name = labelItem.getName();
+                    metricsLabel.value = labelItem.getValue();
+                    labelsList.add(metricsLabel);
                 }
                 for (Types.Sample sample: timeSeries.getSamplesList()) {
-                    metrics.sample = Double.toString(sample.getValue());
-                    metrics.timestamp = Long.toString(sample.getTimestamp());
+                    MetricSample metricSample = new MetricSample();
+                    metricSample.sample = Double.toString(sample.getValue());
+                    metricSample.timestamp = Long.toString(sample.getTimestamp());
+                    sampleList.add(metricSample);
                 }
-                metrics.label = labels;
+                metrics.metricLabels= labelsList;
+                metrics.metricSamples = sampleList;
                 System.out.println(gson.toJson(metrics));
             }
+
+            out.flush();
         } catch (IOException e) {
             throw e;
         }
@@ -92,12 +96,16 @@ public class PrometheusHandler extends AbstractHandler {
 }
 
 class Metrics {
-    public List<MetricsLabels> label;
-    public String sample;
-    public String timestamp;
+    public List<MetricLabel> metricLabels;
+    public List<MetricSample> metricSamples;
 }
 
-class MetricsLabels {
+class MetricLabel {
    public String name;
    public String value;
+}
+
+class MetricSample {
+    public String sample;
+    public String timestamp;
 }

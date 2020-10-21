@@ -1,7 +1,7 @@
 version: '3.7'
 
 networks:
-  jremotewrite:
+  prometheus:
     driver: bridge
 
 volumes:
@@ -30,7 +30,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - jremotewrite
+      - prometheus
     labels:
       org.label-schema.group: "monitoring"
 
@@ -53,6 +53,6 @@ services:
     ports:
       - "9100:9100"
     networks:
-      - jremotewrite
+      - prometheus
     labels:
       org.label-schema.group: "monitoring"
