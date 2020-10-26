@@ -43,9 +43,11 @@ public class PrometheusHandler extends AbstractHandler {
 
     private static JsonFormat.Printer JSON_PRINTER = JsonFormat.printer();
 
-    public PrometheusHandler() {
+    private final int maxBatch;
+
+    public PrometheusHandler(int maxBatch) {
         super();
-        logger.info("constructor handler");
+        this.maxBatch = maxBatch;
     }
 
     @Override
@@ -65,6 +67,8 @@ public class PrometheusHandler extends AbstractHandler {
             response.setStatus(HttpServletResponse.SC_OK);
 
             WriteRequest writeRequest = WriteRequest.parseFrom(is);
+
+            // Max Batch Samples: integer
 
             for (Types.TimeSeries timeSeries: writeRequest.getTimeseriesList()) {
                 List<MetricLabel> labelsList = new ArrayList<>();
