@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     5s
-  evaluation_interval: 5s
+  scrape_interval:     10s
+  evaluation_interval: 10s
 
 scrape_configs:
 
@@ -17,7 +17,7 @@ remote_write:
     - url: 'http://192.168.1.144:8000/v1/write/'
       name: adapter
       queue_config: 
-       max_samples_per_send: 10000
-       batch_send_deadline: 1m
+       max_samples_per_send: 1000
+       batch_send_deadline: 10s
 
 
