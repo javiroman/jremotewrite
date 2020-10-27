@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -44,6 +43,8 @@ public class PrometheusHandler extends AbstractHandler {
     private static JsonFormat.Printer JSON_PRINTER = JsonFormat.printer();
 
     private final int maxBatch;
+    private int bufferElements = 0;
+    List<String> bufferBatch = new ArrayList<>();
 
     public PrometheusHandler(int maxBatch) {
         super();
@@ -58,7 +59,6 @@ public class PrometheusHandler extends AbstractHandler {
 
         // Retrieves the body of the request as binary data: protobuf compressed with snappy.
         try (SnappyInputStream is = new SnappyInputStream(baseRequest.getInputStream())) {
-
             if (is == null) {
                 logger.warning("inputstream is null");
             }
@@ -89,7 +89,18 @@ public class PrometheusHandler extends AbstractHandler {
                 }
                 metrics.metricLabels= labelsList;
                 metrics.metricSamples = sampleList;
-                System.out.println(gson.toJson(metrics));
+
+                if (maxBatch == 0 || maxBatch == 1) {
+                    System.out.println(gson.toJson(metrics));
+                } else if (bufferElements < maxBatch) {
+                    bufferBatch.add(gson.toJson(metrics));
+                    bufferElements++;
+                } else {
+                    System.out.println("Batch mode bufferBatch size: " + bufferBatch.size());
+                    for (String item: bufferBatch) {
+                        System.out.println(item);
+                    }
+                }
             }
 
             out.flush();
