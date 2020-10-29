@@ -18,6 +18,6 @@ remote_write:
       name: adapter
       queue_config: 
        max_samples_per_send: 1000
-       batch_send_deadline: 10s
+       batch_send_deadline: 5s
 
 
