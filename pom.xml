@@ -178,6 +178,7 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <failOnViolation>true</failOnViolation>
+                    <excludes>**/prometheus/Remote.java,**/prometheus/Types.java</excludes>
                 </configuration>
                 <executions>
                     <execution>
