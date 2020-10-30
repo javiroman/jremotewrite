@@ -25,6 +25,7 @@
         <jetty.version>9.3.9.v20160517</jetty.version>
         <protobuf.version>3.13.0</protobuf.version>
         <snappy.version>1.1.7.7</snappy.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencies>
@@ -59,6 +60,12 @@
             <version>${jetty.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
