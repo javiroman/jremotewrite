@@ -49,6 +49,7 @@ public class PrometheusHandler extends AbstractHandler {
     public PrometheusHandler(int maxBatch) {
         super();
         this.maxBatch = maxBatch;
+        logger.info("Hanlder Running");
     }
 
     @Override
