@@ -14,6 +14,21 @@ public class TestPrometheusHandler {
     private final String CONTEXT_PATH = "/test";
     public Server server;
 
+    final String metricExample = "" +
+            "{\n" +
+            "  \"metricLabels\" : [ {\n" +
+            "    \"name\" : \"name1\",\n" +
+            "    \"value\" : \"value1\"\n" +
+            "  }, {\n" +
+            "    \"name\" : \"name2\",\n" +
+            "    \"value\" : \"value2\"\n" +
+            "  } ],\n" +
+            "  \"metricSamples\" : [ {\n" +
+            "    \"sample\" : \"1\",\n" +
+            "    \"timestamp\" : \"1111111111111\"\n" +
+            "  } ]\n" +
+            "}";
+
     @Before
     public void InitServer() throws Exception {
         server = new Server(0);
@@ -45,6 +60,7 @@ public class TestPrometheusHandler {
             System.out.println("server ready for test");
         }
     }
+
 
     @After
     public void ShutdownServer() {
