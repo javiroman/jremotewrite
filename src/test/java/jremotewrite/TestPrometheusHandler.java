@@ -8,6 +8,9 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import prometheus.Remote.WriteRequest;
+import prometheus.Types;
+
+import java.util.Arrays;
 
 public class TestPrometheusHandler {
     private final int MAX_BATCH = 0;
@@ -50,7 +53,26 @@ public class TestPrometheusHandler {
          */
         WriteRequest.Builder builder = WriteRequest.newBuilder();
 
-        //builder.setTimeseries();
+        Types.TimeSeries.Builder timeSeriesBuilder = Types.TimeSeries.newBuilder();
+        Types.Label.Builder labelBuilder = Types.Label.newBuilder();
+        Types.Sample.Builder sampleBuilder = Types.Sample.newBuilder();
+
+
+        labelBuilder.setName("name1")
+            .setValue("value1");
+
+        labelBuilder.setName("name2")
+                .setValue("value2");
+
+        Types.Label l = labelBuilder.build();
+
+        sampleBuilder.setValue(1)
+                .setTimestamp(1111111111111);
+
+        Types.Sample s = sampleBuilder.build();
+
+        timeSeriesBuilder.addAllLabels(Arrays.asList(l));
+        timeSeriesBuilder.addAllSamples(Arrays.asList(s));
 
         WriteRequest message = builder.build();
 
