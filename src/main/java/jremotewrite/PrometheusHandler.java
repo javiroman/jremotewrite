@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -68,8 +69,7 @@ public class PrometheusHandler extends AbstractHandler {
             response.setStatus(HttpServletResponse.SC_OK);
 
             WriteRequest writeRequest = WriteRequest.parseFrom(is);
-
-            // Max Batch Samples: integer
+            System.out.println(writeRequest);
 
             for (Types.TimeSeries timeSeries: writeRequest.getTimeseriesList()) {
                 List<MetricLabel> labelsList = new ArrayList<>();
@@ -105,7 +105,16 @@ public class PrometheusHandler extends AbstractHandler {
             }
 
             out.flush();
-        } catch (IOException e) {
+        } catch (InvalidProtocolBufferException e) {
+            /*
+              While parsing a protocol message, the input ended unexpectedly
+              in the middle of a field.  This could mean either than the
+              input has been truncated or that an embedded message misreported
+              its own length.
+             */
+            logger.severe(e.toString());
+        }
+        catch (IOException e){
             throw e;
         }
     }

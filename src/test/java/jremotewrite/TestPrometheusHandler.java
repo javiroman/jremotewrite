@@ -1,5 +1,7 @@
 package test.java.jremotewrite;
 
+import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.Message;
 import main.java.jremotewrite.PrometheusHandler;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -65,7 +67,7 @@ public class TestPrometheusHandler {
                 value
                 timestamp
          */
-        WriteRequest.Builder builder = WriteRequest.newBuilder();
+        WriteRequest.Builder writeRequestBuilder = WriteRequest.newBuilder();
 
         Types.TimeSeries.Builder timeSeriesBuilder = Types.TimeSeries.newBuilder();
         Types.Label.Builder labelBuilder = Types.Label.newBuilder();
@@ -81,7 +83,7 @@ public class TestPrometheusHandler {
         Types.Label l = labelBuilder.build();
 
         sampleBuilder.setValue(1)
-                .setTimestamp(1111111111);
+                .setTimestamp(1111111111L);
 
         Types.Sample s = sampleBuilder.build();
 
@@ -89,18 +91,18 @@ public class TestPrometheusHandler {
         timeSeriesBuilder.addAllSamples(Arrays.asList(s));
 
         Types.TimeSeries t = timeSeriesBuilder.build();
-        builder.addAllTimeseries(Arrays.asList(t));
+        writeRequestBuilder.addAllTimeseries(Arrays.asList(t));
 
-        WriteRequest message = builder.build();
+        WriteRequest message = writeRequestBuilder.build();
 
-        byte[] compressedMessage = Snappy.compress(String.valueOf(message));
+        byte[] compressedMessage = Snappy.compress(message.toByteArray());
 
         if (server.isRunning()){
             HttpClient httpClient = new HttpClient();
             httpClient.start();
 
             ContentResponse response =
-                    httpClient.newRequest(server.getURI().toString())
+                    httpClient.newRequest(server.getURI().toString() + "/")
                     .method(HttpMethod.POST)
                     .content(new InputStreamContentProvider(
                             new ByteArrayInputStream(compressedMessage)))
