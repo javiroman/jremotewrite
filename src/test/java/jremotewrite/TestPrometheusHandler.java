@@ -1,15 +1,21 @@
 package test.java.jremotewrite;
 
 import main.java.jremotewrite.PrometheusHandler;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.util.InputStreamContentProvider;
+import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.xerial.snappy.Snappy;
 import prometheus.Remote.WriteRequest;
 import prometheus.Types;
 
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
 public class TestPrometheusHandler {
@@ -49,7 +55,15 @@ public class TestPrometheusHandler {
         /*
           We have to create Prometheus PB message
           and send compressed with snappy to the
-          test server with the real handler.
+          test server with the real handler:
+
+          List TimeSeries
+            List Label
+                name
+                value
+            List Sample:
+                value
+                timestamp
          */
         WriteRequest.Builder builder = WriteRequest.newBuilder();
 
@@ -67,22 +81,37 @@ public class TestPrometheusHandler {
         Types.Label l = labelBuilder.build();
 
         sampleBuilder.setValue(1)
-                .setTimestamp(1111111111111);
+                .setTimestamp(1111111111);
 
         Types.Sample s = sampleBuilder.build();
 
         timeSeriesBuilder.addAllLabels(Arrays.asList(l));
         timeSeriesBuilder.addAllSamples(Arrays.asList(s));
 
+        Types.TimeSeries t = timeSeriesBuilder.build();
+        builder.addAllTimeseries(Arrays.asList(t));
+
         WriteRequest message = builder.build();
 
-        //Assert.fail("Not yet implemented");
-        Assume.assumeTrue(true);
+        byte[] compressedMessage = Snappy.compress(String.valueOf(message));
+
         if (server.isRunning()){
-            System.out.println("server ready for test");
+            HttpClient httpClient = new HttpClient();
+            httpClient.start();
+
+            ContentResponse response =
+                    httpClient.newRequest(server.getURI().toString())
+                    .method(HttpMethod.POST)
+                    .content(new InputStreamContentProvider(
+                            new ByteArrayInputStream(compressedMessage)))
+                    .send();
+
+            System.out.println(response.getContentAsString());
+
+            httpClient.stop();
+            Assume.assumeTrue(true);
         }
     }
-
 
     @After
     public void ShutdownServer() {
