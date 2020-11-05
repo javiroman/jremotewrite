@@ -8,6 +8,7 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.InputStreamContentProvider;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.junit.After;
 import org.junit.Assert;
@@ -49,6 +50,7 @@ public class TestPrometheusHandler {
 
         ContextHandler context = new ContextHandler();
         context.setContextPath(CONTEXT_PATH);
+        context.setAllowNullPathInfo(true);
         context.setHandler(new PrometheusHandler(MAX_BATCH));
 
         server.setHandler(context);
@@ -105,7 +107,7 @@ public class TestPrometheusHandler {
             httpClient.start();
 
             ContentResponse response =
-                    httpClient.newRequest(server.getURI().toString() + "/")
+                    httpClient.newRequest(server.getURI().toString())
                     .method(HttpMethod.POST)
                     .content(new InputStreamContentProvider(
                             new ByteArrayInputStream(compressedMessage)))
