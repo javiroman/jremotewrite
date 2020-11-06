@@ -1,25 +1,20 @@
 package test.java.jremotewrite;
 
-import com.google.protobuf.GeneratedMessageV3;
-import com.google.protobuf.Message;
 import main.java.jremotewrite.PrometheusHandler;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.InputStreamContentProvider;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.xerial.snappy.Snappy;
 import prometheus.Remote.WriteRequest;
 import prometheus.Types;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;

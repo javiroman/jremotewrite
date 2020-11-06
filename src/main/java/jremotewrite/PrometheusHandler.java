@@ -113,8 +113,7 @@ public class PrometheusHandler extends AbstractHandler {
               its own length.
              */
             logger.severe(e.toString());
-        }
-        catch (IOException e){
+        } catch (IOException e){
             throw e;
         }
     }
